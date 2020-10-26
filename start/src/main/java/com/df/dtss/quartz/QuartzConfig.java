@@ -32,7 +32,7 @@ public class QuartzConfig {
         schedulerFactoryBean.setApplicationContextSchedulerContextKey("applicationContextKey");
         //覆盖已存在的任务
         schedulerFactoryBean.setOverwriteExistingJobs(true);
-        //延时60秒启动定时任务，避免系统未完全启动却开始执行定时任务的情况
+        //延时30秒启动定时任务，避免系统未完全启动却开始执行定时任务的情况
         schedulerFactoryBean.setStartupDelay(30);
         //当spring关闭时，等待所有已启动的job结束后spring才完全
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(true);

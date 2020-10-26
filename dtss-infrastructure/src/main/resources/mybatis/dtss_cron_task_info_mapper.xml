@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.df.dtss.gatewayimpl.database.CronTaskInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.df.dtss.gatewayimpl.database.model.CronTaskInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="task_code" jdbcType="VARCHAR" property="taskCode"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="app_id" jdbcType="BIGINT" property="appId"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="run_type" jdbcType="INTEGER" property="runType"/>
+        <result column="cron" jdbcType="VARCHAR" property="cron"/>
+        <result column="task_status" jdbcType="TINYINT" property="taskStatus"/>
+        <result column="route_strategy" jdbcType="INTEGER" property="routeStrategy"/>
+        <result column="job_handler" jdbcType="VARCHAR" property="jobHandler"/>
+        <result column="block_strategy" jdbcType="INTEGER" property="blockStrategy"/>
+        <result column="sub_task_ids" jdbcType="VARCHAR" property="subTaskIds"/>
+        <result column="task_time_out" jdbcType="INTEGER" property="taskTimeOut"/>
+        <result column="retry_times" jdbcType="INTEGER" property="retryTimes"/>
+        <result column="mail" jdbcType="VARCHAR" property="mail"/>
+        <result column="task_param" jdbcType="VARCHAR" property="taskParam"/>
+        <result column="owner" jdbcType="VARCHAR" property="owner"/>
+        <result column="glue_source_id" jdbcType="BIGINT" property="glueSourceId"/>
+        <result column="last_execute_time" jdbcType="BIGINT" property="lastExecuteTime"/>
+        <result column="next_execute_time" jdbcType="BIGINT" property="nextExecuteTime"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" property="editTime"/>
+    </resultMap>
+
+    <!-- 字段列表 -->
+    <sql id="Base_Column_List">
+        id,
+            task_code,
+            task_name,
+            app_id,
+            app_name,
+            run_type,
+            cron,
+            task_status,
+            route_strategy,
+            job_handler,
+            block_strategy,
+            sub_task_ids,
+            task_time_out,
+            retry_times,
+            mail,
+            task_param,
+            owner,
+            glue_source_id,
+            last_execute_time,
+            next_execute_time,
+            is_deleted,
+            creator,
+            editor,
+            create_time,
+            edit_time
+        </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dtss_cron_task_info
+        where id = #{id} and is_deleted = 0
+    </select>
+
+    <!-- 新增一条记录 -->
+    <insert id="insert" parameterType="com.df.dtss.gatewayimpl.database.model.CronTaskInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into dtss_cron_task_info (<include refid="Base_Column_List"/>)
+        values(
+        #{id, jdbcType=BIGINT},
+        #{taskCode, jdbcType=VARCHAR},
+        #{taskName, jdbcType=VARCHAR},
+        #{appId, jdbcType=BIGINT},
+        #{appName, jdbcType=VARCHAR},
+        #{runType, jdbcType=INTEGER},
+        #{cron, jdbcType=VARCHAR},
+        #{taskStatus, jdbcType=TINYINT},
+        #{routeStrategy, jdbcType=INTEGER},
+        #{jobHandler, jdbcType=VARCHAR},
+        #{blockStrategy, jdbcType=INTEGER},
+        #{subTaskIds, jdbcType=VARCHAR},
+        #{taskTimeOut, jdbcType=INTEGER},
+        #{retryTimes, jdbcType=INTEGER},
+        #{mail, jdbcType=VARCHAR},
+        #{taskParam, jdbcType=VARCHAR},
+        #{owner, jdbcType=VARCHAR},
+        #{glueSourceId, jdbcType=BIGINT},
+        #{lastExecuteTime, jdbcType=BIGINT},
+        #{nextExecuteTime, jdbcType=BIGINT},
+        #{isDeleted, jdbcType=TINYINT},
+        #{creator, jdbcType=VARCHAR},
+        #{editor, jdbcType=VARCHAR},
+        #{createTime, jdbcType=TIMESTAMP},
+        #{editTime, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!-- 根据主键更新数据 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.df.dtss.gatewayimpl.database.model.CronTaskInfo">
+        update dtss_cron_task_info
+        <set>
+            <if test="taskCode != null">
+                task_code = #{taskCode, jdbcType=VARCHAR},
+            </if>
+            <if test="taskName != null">
+                task_name = #{taskName, jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                app_id = #{appId, jdbcType=BIGINT},
+            </if>
+            <if test="appName != null">
+                app_name = #{appName, jdbcType=VARCHAR},
+            </if>
+            <if test="runType != null">
+                run_type = #{runType, jdbcType=INTEGER},
+            </if>
+            <if test="cron != null">
+                cron = #{cron, jdbcType=VARCHAR},
+            </if>
+            <if test="taskStatus != null">
+                task_status = #{taskStatus, jdbcType=TINYINT},
+            </if>
+            <if test="routeStrategy != null">
+                route_strategy = #{routeStrategy, jdbcType=INTEGER},
+            </if>
+            <if test="jobHandler != null">
+                job_handler = #{jobHandler, jdbcType=VARCHAR},
+            </if>
+            <if test="blockStrategy != null">
+                block_strategy = #{blockStrategy, jdbcType=INTEGER},
+            </if>
+            <if test="subTaskIds != null">
+                sub_task_ids = #{subTaskIds, jdbcType=VARCHAR},
+            </if>
+            <if test="taskTimeOut != null">
+                task_time_out = #{taskTimeOut, jdbcType=INTEGER},
+            </if>
+            <if test="retryTimes != null">
+                retry_times = #{retryTimes, jdbcType=INTEGER},
+            </if>
+            <if test="mail != null">
+                mail = #{mail, jdbcType=VARCHAR},
+            </if>
+            <if test="taskParam != null">
+                task_param = #{taskParam, jdbcType=VARCHAR},
+            </if>
+            <if test="owner != null">
+                owner = #{owner, jdbcType=VARCHAR},
+            </if>
+            <if test="glueSourceId != null">
+                glue_source_id = #{glueSourceId, jdbcType=BIGINT},
+            </if>
+            <if test="lastExecuteTime != null">
+                last_execute_time = #{lastExecuteTime, jdbcType=BIGINT},
+            </if>
+            <if test="nextExecuteTime != null">
+                next_execute_time = #{nextExecuteTime, jdbcType=BIGINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted, jdbcType=TINYINT},
+            </if>
+            <if test="creator != null">
+                creator = #{creator, jdbcType=VARCHAR},
+            </if>
+            <if test="editor != null">
+                editor = #{editor, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="editTime != null">
+                edit_time = #{editTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id} and is_deleted = 0 limit 1
+    </update>
+
+    <!-- 等值查询条件 -->
+    <sql id="Equal_Where_List">
+        and is_deleted = 0
+        <if test="taskCode != null">
+            and task_code = #{taskCode, jdbcType=VARCHAR}
+        </if>
+        <if test="taskName != null">
+            and task_name = #{taskName, jdbcType=VARCHAR}
+        </if>
+        <if test="appId != null">
+            and app_id = #{appId, jdbcType=BIGINT}
+        </if>
+        <if test="appName != null">
+            and app_name = #{appName, jdbcType=VARCHAR}
+        </if>
+        <if test="runType != null">
+            and run_type = #{runType, jdbcType=INTEGER}
+        </if>
+        <if test="cron != null">
+            and cron = #{cron, jdbcType=VARCHAR}
+        </if>
+        <if test="taskStatus != null">
+            and task_status = #{taskStatus, jdbcType=TINYINT}
+        </if>
+        <if test="routeStrategy != null">
+            and route_strategy = #{routeStrategy, jdbcType=INTEGER}
+        </if>
+        <if test="jobHandler != null">
+            and job_handler = #{jobHandler, jdbcType=VARCHAR}
+        </if>
+        <if test="blockStrategy != null">
+            and block_strategy = #{blockStrategy, jdbcType=INTEGER}
+        </if>
+        <if test="subTaskIds != null">
+            and sub_task_ids = #{subTaskIds, jdbcType=VARCHAR}
+        </if>
+        <if test="taskTimeOut != null">
+            and task_time_out = #{taskTimeOut, jdbcType=INTEGER}
+        </if>
+        <if test="retryTimes != null">
+            and retry_times = #{retryTimes, jdbcType=INTEGER}
+        </if>
+        <if test="mail != null">
+            and mail = #{mail, jdbcType=VARCHAR}
+        </if>
+        <if test="taskParam != null">
+            and task_param = #{taskParam, jdbcType=VARCHAR}
+        </if>
+        <if test="owner != null">
+            and owner = #{owner, jdbcType=VARCHAR}
+        </if>
+        <if test="glueSourceId != null">
+            and glue_source_id = #{glueSourceId, jdbcType=BIGINT}
+        </if>
+        <if test="lastExecuteTime != null">
+            and last_execute_time = #{lastExecuteTime, jdbcType=BIGINT}
+        </if>
+        <if test="nextExecuteTime != null">
+            and next_execute_time = #{nextExecuteTime, jdbcType=BIGINT}
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted, jdbcType=TINYINT}
+        </if>
+        <if test="creator != null">
+            and creator = #{creator, jdbcType=VARCHAR}
+        </if>
+        <if test="editor != null">
+            and editor = #{editor, jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <!-- 范围查询条件，包括 <、 >、between、like、in等 -->
+    <sql id="Range_Where_List">
+        and is_deleted = 0
+        <if test="createTimeFrom != null">
+            <![CDATA[
+            and create_time >= #{createTimeFrom, jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+        <if test="createTimeTo != null">
+            <![CDATA[
+            and create_time <= #{createTimeTo, jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+        <if test="editTimeFrom != null">
+            <![CDATA[
+            and edit_time >= #{editTimeFrom, jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+        <if test="editTimeTo != null">
+            <![CDATA[
+            and edit_time <= #{editTimeTo, jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+    </sql>
+
+    <!-- 上次查询Id最大值 -->
+    <sql id="GtLastMaxId_Where">
+        <if test="lastMaxId != null and lastMaxId > 0">
+            and id > #{lastMaxId}
+        </if>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Order_By">
+        <if test="sorts != null and sorts.size > 0">
+            ORDER BY
+            <foreach collection="sorts" item="sortItem" separator=",">
+                ${sortItem.column} ${sortItem.type.message}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 根据查询参数查询数据 -->
+    <select id="selectByCondition" parameterType="com.df.dtss.domain.query.CronTaskInfoQuery" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dtss_cron_task_info
+        <where>
+            <include refid="Equal_Where_List"/>
+            <include refid="Range_Where_List"/>
+            <include refid="GtLastMaxId_Where"/>
+        </where>
+        <include refid="Order_By"/>
+        <if test="limit > 0">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 根据查询参数查询数据总量 -->
+    <select id="countByCondition" parameterType="com.df.dtss.domain.query.CronTaskInfoQuery"
+            resultType="java.lang.Integer">
+        select count(1)
+        from dtss_cron_task_info
+        <where>
+            <include refid="Equal_Where_List"/>
+            <include refid="Range_Where_List"/>
+        </where>
+    </select>
+
+    <!--批量查询-->
+    <select id="selectByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dtss_cron_task_info
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+
+    <!--批量更新-->
+    <select id="updateByIds" parameterType="map">
+        update dtss_cron_task_info
+        <set>
+            <if test="record.taskCode != null">
+                task_code = #{record.taskCode, jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskName != null">
+                task_name = #{record.taskName, jdbcType=VARCHAR},
+            </if>
+            <if test="record.appId != null">
+                app_id = #{record.appId, jdbcType=BIGINT},
+            </if>
+            <if test="record.appName != null">
+                app_name = #{record.appName, jdbcType=VARCHAR},
+            </if>
+            <if test="record.runType != null">
+                run_type = #{record.runType, jdbcType=INTEGER},
+            </if>
+            <if test="record.cron != null">
+                cron = #{record.cron, jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskStatus != null">
+                task_status = #{record.taskStatus, jdbcType=TINYINT},
+            </if>
+            <if test="record.routeStrategy != null">
+                route_strategy = #{record.routeStrategy, jdbcType=INTEGER},
+            </if>
+            <if test="record.jobHandler != null">
+                job_handler = #{record.jobHandler, jdbcType=VARCHAR},
+            </if>
+            <if test="record.blockStrategy != null">
+                block_strategy = #{record.blockStrategy, jdbcType=INTEGER},
+            </if>
+            <if test="record.subTaskIds != null">
+                sub_task_ids = #{record.subTaskIds, jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskTimeOut != null">
+                task_time_out = #{record.taskTimeOut, jdbcType=INTEGER},
+            </if>
+            <if test="record.retryTimes != null">
+                retry_times = #{record.retryTimes, jdbcType=INTEGER},
+            </if>
+            <if test="record.mail != null">
+                mail = #{record.mail, jdbcType=VARCHAR},
+            </if>
+            <if test="record.taskParam != null">
+                task_param = #{record.taskParam, jdbcType=VARCHAR},
+            </if>
+            <if test="record.owner != null">
+                owner = #{record.owner, jdbcType=VARCHAR},
+            </if>
+            <if test="record.glueSourceId != null">
+                glue_source_id = #{record.glueSourceId, jdbcType=BIGINT},
+            </if>
+            <if test="record.lastExecuteTime != null">
+                last_execute_time = #{record.lastExecuteTime, jdbcType=BIGINT},
+            </if>
+            <if test="record.nextExecuteTime != null">
+                next_execute_time = #{record.nextExecuteTime, jdbcType=BIGINT},
+            </if>
+            <if test="record.isDeleted != null">
+                is_deleted = #{record.isDeleted, jdbcType=TINYINT},
+            </if>
+            <if test="record.creator != null">
+                creator = #{record.creator, jdbcType=VARCHAR},
+            </if>
+            <if test="record.editor != null">
+                editor = #{record.editor, jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.editTime != null">
+                edit_time = #{record.editTime, jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+</mapper>

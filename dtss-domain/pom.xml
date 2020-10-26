@@ -15,11 +15,6 @@
 			<groupId>com.xy</groupId>
 			<artifactId>cola-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.df</groupId>
-			<artifactId>dtss-client</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<!-- COLA Framework End-->
 		<dependency>
 			<groupId>junit</groupId>
@@ -36,6 +31,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
 

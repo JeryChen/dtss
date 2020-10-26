@@ -13,11 +13,6 @@
     <dependencies>
         <dependency>
             <groupId>com.df</groupId>
-            <artifactId>dtss-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.df</groupId>
             <artifactId>dtss-infrastructure</artifactId>
             <version>${project.version}</version>
         </dependency>

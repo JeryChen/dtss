@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.df</groupId>
+        <groupId>com.df.dtss</groupId>
         <artifactId>dtss</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>dtss-app</artifactId>
-    <name>DtssApplication-app</name>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>dtss-app</name>
     <dependencies>
         <dependency>
-            <groupId>com.df</groupId>
+            <groupId>com.df.dtss</groupId>
             <artifactId>dtss-infrastructure</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <!-- JSR 303 Validation -->
         <dependency>

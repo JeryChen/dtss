@@ -37,6 +37,14 @@
         where id = #{id} and is_deleted = 0
     </select>
 
+    <!--  查询所有appName  -->
+    <select id="getAllApps" resultType="java.lang.String">
+        select
+        app_name
+        from dtss_app_info
+        where id = #{id} and is_deleted = 0
+    </select>
+
     <!-- 新增一条记录 -->
     <insert id="insert" parameterType="com.df.dtss.gatewayimpl.database.model.AppInfo" useGeneratedKeys="true"
             keyProperty="id">

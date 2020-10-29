@@ -1,10 +1,12 @@
 package com.df.dtss.domain.query;
 
-import com.xy.cola.common.PagingQuery;
-
-import java.util.Date;
+import com.xy.cola.dto.PagingQuery;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 〈周期任务信息 查询参数〉<p>
@@ -15,6 +17,9 @@ import java.io.Serializable;
 @lombok.Data
 @lombok.EqualsAndHashCode(callSuper = true)
 @lombok.ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CronTaskInfoQuery extends PagingQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;

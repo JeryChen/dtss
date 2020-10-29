@@ -2,23 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-        <groupId>com.df</groupId>
+        <groupId>com.df.dtss</groupId>
         <artifactId>dtss</artifactId>
         <version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>dtss-infrastructure</artifactId>
-	<name>DtssApplication-infrastructure</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>dtss-infrastructure</name>
 	<dependencies>
 		<!--DIP here, Infrastructure depends on Domain-->
 		<dependency>
-			<groupId>com.df</groupId>
+			<groupId>com.df.dtss</groupId>
 			<artifactId>dtss-domain</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.xy</groupId>
 			<artifactId>cola-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -53,7 +59,6 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 		</dependency>
     </dependencies>
-
 	<build>
 		<pluginManagement>
 			<plugins>

@@ -52,18 +52,25 @@ public interface AppInfoMapper {
     Integer countByCondition(AppInfoQuery query);
 
     /**
-    * 批量查询
-    *
-    * @param ids 查询参数
-    */
+     * 批量查询
+     *
+     * @param ids 查询参数
+     */
     List<AppInfo> selectByIds(List<Long> ids);
 
     /**
-    * 批量更新
-    *
-    * @param ids 更新ID
-    * @param record 更新参数
-    */
+     * 批量更新
+     *
+     * @param ids    更新ID
+     * @param record 更新参数
+     */
     void updateByIds(List<Long> ids, AppInfo record);
+
+    /**
+     * 获取所有appName
+     *
+     * @return 所有appName
+     */
+    List<String> getAllApps();
 
 }

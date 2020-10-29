@@ -1,10 +1,9 @@
 package com.df.dtss.domain.query;
 
-import com.xy.cola.common.PagingQuery;
-
-import java.util.Date;
+import com.xy.cola.dto.PagingQuery;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 〈任务所属应用信息 查询参数〉<p>

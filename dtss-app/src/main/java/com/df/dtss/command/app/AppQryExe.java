@@ -61,4 +61,15 @@ public class AppQryExe {
         }
         return response;
     }
+
+    /**
+     * 根据主键id查询app应用信息
+     *
+     * @param appId app主键id
+     * @return 处理结果
+     */
+    public SingleResponse<AppInfoVO> execute(Long appId) {
+        AppInfo appInfo = appInfoMapper.selectByPrimaryKey(appId);
+        return SingleResponse.of(AppViewConvert.INSTANCE.map(appInfo));
+    }
 }

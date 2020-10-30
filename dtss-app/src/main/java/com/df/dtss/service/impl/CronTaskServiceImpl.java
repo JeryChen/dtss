@@ -1,5 +1,6 @@
 package com.df.dtss.service.impl;
 
+import com.df.dtss.command.app.AppQryExe;
 import com.df.dtss.command.task.CronTaskQryExe;
 import com.df.dtss.common.event.DomainEventPublisher;
 import com.df.dtss.domain.dto.CronTaskAddCmd;
@@ -8,6 +9,7 @@ import com.df.dtss.domain.enums.TaskTypeEnum;
 import com.df.dtss.domain.event.TaskCreatedEvent;
 import com.df.dtss.handle.extension.point.CronTaskAddValidatorExtPt;
 import com.df.dtss.service.CronTaskServiceI;
+import com.df.dtss.vo.AppInfoVO;
 import com.df.dtss.vo.CronTaskVO;
 import com.xy.cola.dto.PageResponse;
 import com.xy.cola.dto.PagingParam;
@@ -43,6 +45,9 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
     @Resource
     private CronTaskQryExe cronTaskQryExe;
 
+    @Resource
+    private AppQryExe appQryExe;
+
     /**
      * 分页查询周期任务信息列表
      *
@@ -66,6 +71,9 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
     public Response create(CronTaskAddCmd cronTaskAddCmd) {
         extensionExecutor.executeVoid(CronTaskAddValidatorExtPt.class, cronTaskAddCmd.getBizScenario(),
                 cronTaskAddValidatorExtPt -> cronTaskAddValidatorExtPt.validate(cronTaskAddCmd));
+        SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskAddCmd.getCronTask().getAppId());
+        BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
+        cronTaskAddCmd.getCronTask().setAppName(appInfoResp.getData().getAppName());
         SingleResponse<Long> createCronTaskResp = cronTaskQryExe.create(cronTaskAddCmd);
         BusinessAssert.isTrue(createCronTaskResp.isSuccess(), "创建周期任务失败");
         TaskCreatedEvent taskCreatedEvent = new TaskCreatedEvent();

@@ -28,6 +28,11 @@ public class CronTaskDTO extends ClientObject {
     private Long appId;
 
     /**
+     * 所属应用名
+     */
+    private String appName;
+
+    /**
      * 运行模式
      */
     private Integer runType;

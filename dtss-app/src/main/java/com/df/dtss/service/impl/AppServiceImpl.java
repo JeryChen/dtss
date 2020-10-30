@@ -2,6 +2,7 @@ package com.df.dtss.service.impl;
 
 import com.df.dtss.command.app.AppQryExe;
 import com.df.dtss.service.AppServiceI;
+import com.df.dtss.vo.AppInfoVO;
 import com.xy.cola.dto.SingleResponse;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class AppServiceImpl implements AppServiceI {
      * @return 所有appName
      */
     @Override
-    public SingleResponse<List<String>> getAllAppNameList() {
+    public SingleResponse<List<AppInfoVO>> getAllAppNameList() {
         return appQryExe.execute();
     }
 }

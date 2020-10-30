@@ -1,5 +1,6 @@
 package com.df.dtss.service;
 
+import com.df.dtss.vo.AppInfoVO;
 import com.xy.cola.dto.SingleResponse;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface AppServiceI {
      *
      * @return 所有appName
      */
-    SingleResponse<List<String>> getAllAppNameList();
+    SingleResponse<List<AppInfoVO>> getAllAppNameList();
 }

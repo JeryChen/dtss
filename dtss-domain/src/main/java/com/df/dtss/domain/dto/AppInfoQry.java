@@ -20,7 +20,7 @@ public class AppInfoQry extends Command {
     /**
      * 应用名
      */
-    private String appName;
+    private String appId;
 
     /**
      * 应用描述

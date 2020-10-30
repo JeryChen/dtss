@@ -71,6 +71,6 @@ public interface AppInfoMapper {
      *
      * @return 所有appName
      */
-    List<String> getAllApps();
+    List<AppInfo> getAllApps();
 
 }

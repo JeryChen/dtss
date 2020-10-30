@@ -18,16 +18,6 @@ import lombok.EqualsAndHashCode;
 public class CronTaskDTO extends ClientObject {
 
     /**
-     * 主键id
-     */
-    private Long id;
-
-    /**
-     * 任务编码
-     */
-    private String taskCode;
-
-    /**
      * 任务名称
      */
     private String taskName;
@@ -36,11 +26,6 @@ public class CronTaskDTO extends ClientObject {
      * appId，应用表主键id
      */
     private Long appId;
-
-    /**
-     * 所属应用名
-     */
-    private String appName;
 
     /**
      * 运行模式

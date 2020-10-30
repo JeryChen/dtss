@@ -1,6 +1,9 @@
 package com.df.dtss.gatewayimpl.database.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -13,6 +16,9 @@ import java.io.Serializable;
  * @date 2020-10-26
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TaskGlueRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;

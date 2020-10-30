@@ -1,4 +1,4 @@
-package com.df.dtss.domain.convert;
+package com.df.dtss.convert;
 
 import com.df.dtss.domain.dto.AppInfoQry;
 import com.df.dtss.domain.query.AppInfoQuery;

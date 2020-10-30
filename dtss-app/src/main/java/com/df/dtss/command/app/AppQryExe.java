@@ -1,7 +1,7 @@
 package com.df.dtss.command.app;
 
 import com.df.dtss.convert.AppViewConvert;
-import com.df.dtss.domain.convert.AppConvert;
+import com.df.dtss.convert.AppConvert;
 import com.df.dtss.domain.dto.AppInfoQry;
 import com.df.dtss.domain.query.AppInfoQuery;
 import com.df.dtss.gatewayimpl.database.AppInfoMapper;

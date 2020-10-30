@@ -1,8 +1,11 @@
 package com.df.dtss.service.impl;
 
 import com.df.dtss.command.app.AppQryExe;
+import com.df.dtss.domain.dto.AppInfoQry;
 import com.df.dtss.service.AppServiceI;
 import com.df.dtss.vo.AppInfoVO;
+import com.xy.cola.dto.PageResponse;
+import com.xy.cola.dto.PagingParam;
 import com.xy.cola.dto.SingleResponse;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +35,17 @@ public class AppServiceImpl implements AppServiceI {
     @Override
     public SingleResponse<List<AppInfoVO>> getAllAppNameList() {
         return appQryExe.execute();
+    }
+
+    /**
+     * 分页查询应用信息
+     *
+     * @param appInfoQry  查询参数
+     * @param pagingParam 分页信息
+     * @return 应用信息
+     */
+    @Override
+    public PageResponse<List<AppInfoVO>> pageList(AppInfoQry appInfoQry, PagingParam pagingParam) {
+        return appQryExe.execute(appInfoQry, pagingParam);
     }
 }

@@ -3,6 +3,8 @@ package com.df.dtss.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * <功能介绍><br>
  * <p>
@@ -33,5 +35,17 @@ public enum RouteStrategyEnum {
     private final Integer code;
 
     private final String desc;
+
+    public static boolean isExist(Integer code) {
+        if (Objects.isNull(code)) {
+            return false;
+        }
+        for (RouteStrategyEnum routeStrategyEnum : RouteStrategyEnum.values()) {
+            if (Objects.equals(routeStrategyEnum.getCode(), code)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

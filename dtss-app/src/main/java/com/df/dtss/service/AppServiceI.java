@@ -1,6 +1,9 @@
 package com.df.dtss.service;
 
+import com.df.dtss.domain.dto.AppInfoQry;
 import com.df.dtss.vo.AppInfoVO;
+import com.xy.cola.dto.PageResponse;
+import com.xy.cola.dto.PagingParam;
 import com.xy.cola.dto.SingleResponse;
 
 import java.util.List;
@@ -22,4 +25,13 @@ public interface AppServiceI {
      * @return 所有appName
      */
     SingleResponse<List<AppInfoVO>> getAllAppNameList();
+
+    /**
+     * 分页查询应用信息
+     *
+     * @param appInfoQry  查询参数
+     * @param pagingParam 分页信息
+     * @return 应用信息
+     */
+    PageResponse<List<AppInfoVO>> pageList(AppInfoQry appInfoQry, PagingParam pagingParam);
 }

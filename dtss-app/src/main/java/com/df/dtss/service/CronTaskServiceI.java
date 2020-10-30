@@ -1,9 +1,11 @@
 package com.df.dtss.service;
 
+import com.df.dtss.domain.dto.CronTaskAddCmd;
 import com.df.dtss.domain.dto.CronTaskQry;
 import com.df.dtss.vo.CronTaskVO;
 import com.xy.cola.dto.PageResponse;
 import com.xy.cola.dto.PagingParam;
+import com.xy.cola.dto.Response;
 
 import java.util.List;
 
@@ -26,4 +28,12 @@ public interface CronTaskServiceI {
      * @return 分页周期任务信息
      */
     PageResponse<List<CronTaskVO>> pageList(CronTaskQry cronTaskQry, PagingParam pagingParam);
+
+    /**
+     * 新建周期任务
+     *
+     * @param cronTaskAddCmd 添加周期任务指令
+     * @return 处理结果
+     */
+    Response create(CronTaskAddCmd cronTaskAddCmd);
 }

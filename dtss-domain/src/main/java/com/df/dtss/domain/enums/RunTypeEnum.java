@@ -3,6 +3,8 @@ package com.df.dtss.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * <功能介绍><br>
  * <p>
@@ -26,4 +28,20 @@ public enum RunTypeEnum {
     private final Integer code;
 
     private final String desc;
+
+    public static boolean isExist(Integer code) {
+        if (Objects.isNull(code)) {
+            return false;
+        }
+        for (RunTypeEnum runTypeEnum : RunTypeEnum.values()) {
+            if (Objects.equals(runTypeEnum.getCode(), code)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isGlue(Integer code) {
+        return Objects.equals(RunTypeEnum.GLUE.getCode(), code);
+    }
 }

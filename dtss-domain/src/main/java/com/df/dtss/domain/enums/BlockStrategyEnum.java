@@ -3,6 +3,8 @@ package com.df.dtss.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * <功能介绍><br>
  * <p>
@@ -26,5 +28,17 @@ public enum BlockStrategyEnum {
     private final Integer code;
 
     private final String desc;
+
+    public static boolean isExist(Integer code) {
+        if (Objects.isNull(code)) {
+            return false;
+        }
+        for (BlockStrategyEnum strategyEnum : BlockStrategyEnum.values()) {
+            if (Objects.equals(strategyEnum.getCode(), code)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

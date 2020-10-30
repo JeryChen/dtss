@@ -92,8 +92,8 @@ CREATE TABLE `dtss`.`dtss_app_info`
 CREATE TABLE `dtss`.`dtss_user_account`
 (
     `id`          bigint(20)  NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `username`    varchar(50) NOT NULL COMMENT '账号',
-    `password`    varchar(50) NOT NULL COMMENT '密码',
+    `username`    varchar(32) NOT NULL COMMENT '账号',
+    `password`    varchar(64) NOT NULL COMMENT '密码',
     `role`        tinyint(4)  NOT NULL COMMENT '角色：0-普通用户、1-管理员',
     `permission`  varchar(255)         DEFAULT NULL COMMENT '权限：执行器ID列表，多个逗号分割',
     `is_deleted`  tinyint(4)  NOT NULL COMMENT '是否已删除，1.是，0.否',

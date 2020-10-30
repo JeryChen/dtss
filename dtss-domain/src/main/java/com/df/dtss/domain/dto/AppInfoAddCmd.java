@@ -17,5 +17,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class AppInfoAddCmd extends CommonCommand {
 
-    private AppInfoDTO appInfoDTO;
+    /**
+     * app应用信息
+     */
+    private AppInfoDTO appInfo;
 }

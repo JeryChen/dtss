@@ -1,7 +1,9 @@
-package com.df.dtss.domain.convert;
+package com.df.dtss.convert;
 
 import com.df.dtss.domain.dto.CronTaskQry;
+import com.df.dtss.domain.dto.clientobject.CronTaskDTO;
 import com.df.dtss.domain.query.CronTaskInfoQuery;
+import com.df.dtss.gatewayimpl.database.model.CronTaskInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -30,4 +32,12 @@ public abstract class CronTaskConvert {
      */
     public abstract CronTaskInfoQuery map(CronTaskQry cronTaskQry);
 
+
+    /**
+     * Map cron task info.
+     *
+     * @param cronTaskDTO the cron task dto
+     * @return the cron task info
+     */
+    public abstract CronTaskInfo map(CronTaskDTO cronTaskDTO);
 }

@@ -18,12 +18,8 @@ import lombok.EqualsAndHashCode;
 public class CommonCommand extends Command {
 
     /**
-     * 创建人
+     * 操作人
      */
-    private String creator;
+    private String operator;
 
-    /**
-     * 修改人
-     */
-    private String editor;
 }

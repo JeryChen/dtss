@@ -69,20 +69,45 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
     @Override
     @Transactional(rollbackFor = Throwable.class, isolation = Isolation.READ_COMMITTED)
     public Response create(CronTaskAddCmd cronTaskAddCmd) {
+        //执行扩展点
         extensionExecutor.executeVoid(CronTaskAddValidatorExtPt.class, cronTaskAddCmd.getBizScenario(),
                 cronTaskAddValidatorExtPt -> cronTaskAddValidatorExtPt.validate(cronTaskAddCmd));
+        //新建任务
+        Long cronTaskId = addCronTask(cronTaskAddCmd);
+        //创建事件
+        publish(cronTaskId, cronTaskAddCmd);
+        return Response.buildSuccess();
+    }
+
+    /**
+     * 新建任务
+     *
+     * @param cronTaskAddCmd 添加周期任务指令
+     * @return 任务主键id
+     */
+    private Long addCronTask(CronTaskAddCmd cronTaskAddCmd) {
         SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskAddCmd.getCronTask().getAppId());
         BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
         cronTaskAddCmd.getCronTask().setAppName(appInfoResp.getData().getAppName());
         SingleResponse<Long> createCronTaskResp = cronTaskQryExe.create(cronTaskAddCmd);
         BusinessAssert.isTrue(createCronTaskResp.isSuccess(), "创建周期任务失败");
+        return createCronTaskResp.getData();
+    }
+
+    /**
+     * 发布新建任务事件
+     *
+     * @param cronTaskId     任务id
+     * @param cronTaskAddCmd 添加周期任务指令
+     */
+    private void publish(Long cronTaskId, CronTaskAddCmd cronTaskAddCmd) {
         TaskCreatedEvent taskCreatedEvent = new TaskCreatedEvent();
-        taskCreatedEvent.setTaskId(createCronTaskResp.getData());
+        taskCreatedEvent.setTaskId(cronTaskId);
         taskCreatedEvent.setTaskType(TaskTypeEnum.CRON_TASK.getCode());
         taskCreatedEvent.setTaskGlue(cronTaskAddCmd.getTaskGlue());
         taskCreatedEvent.setOperator(cronTaskAddCmd.getOperator());
         Response publishResp = domainEventPublisher.publish(taskCreatedEvent);
         BusinessAssert.isTrue(publishResp.isSuccess(), "创建任务glue失败");
-        return Response.buildSuccess();
     }
+
 }

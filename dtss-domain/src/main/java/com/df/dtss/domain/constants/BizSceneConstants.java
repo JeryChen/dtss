@@ -15,4 +15,19 @@ public interface BizSceneConstants {
      * dtss后台系统
      */
     static final String ADMIN_SYS = "dtss";
+
+    /**
+     * 后台使用场景
+     */
+    static final String ADMIN_USE_CASE = "admin";
+
+    /**
+     * 添加cronTask场景
+     */
+    static final String ADD_CRON_TASK_SCENARIO = "addCronTask";
+
+    /**
+     * 更新cronTask场景
+     */
+    static final String UPDATE_CRON_TASK_SCENARIO = "updateCronTask";
 }

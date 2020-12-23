@@ -42,7 +42,7 @@
         select
         id, app_name
         from dtss_app_info
-        where id = #{id} and is_deleted = 0
+        where is_deleted = 0
     </select>
 
     <!-- 新增一条记录 -->

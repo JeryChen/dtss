@@ -5,9 +5,10 @@ import com.df.dtss.command.task.CronTaskQryExe;
 import com.df.dtss.common.event.DomainEventPublisher;
 import com.df.dtss.domain.dto.CronTaskAddCmd;
 import com.df.dtss.domain.dto.CronTaskQry;
+import com.df.dtss.domain.dto.CronTaskUpdateCmd;
 import com.df.dtss.domain.enums.TaskTypeEnum;
 import com.df.dtss.domain.event.TaskCreatedEvent;
-import com.df.dtss.handle.extension.point.CronTaskAddValidatorExtPt;
+import com.df.dtss.handle.extension.point.CronTaskValidatorExtPt;
 import com.df.dtss.service.CronTaskServiceI;
 import com.df.dtss.vo.AppInfoVO;
 import com.df.dtss.vo.CronTaskVO;
@@ -53,6 +54,7 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
      *
      * @param cronTaskQry 查询参数指令
      * @param pagingParam 分页参数信息
+     *
      * @return 分页周期任务信息
      */
     @Override
@@ -64,32 +66,58 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
      * 新建周期任务
      *
      * @param cronTaskAddCmd 添加周期任务指令
+     *
      * @return 处理结果
      */
     @Override
     @Transactional(rollbackFor = Throwable.class, isolation = Isolation.READ_COMMITTED)
     public Response create(CronTaskAddCmd cronTaskAddCmd) {
-        //执行扩展点
-        extensionExecutor.executeVoid(CronTaskAddValidatorExtPt.class, cronTaskAddCmd.getBizScenario(),
-                cronTaskAddValidatorExtPt -> cronTaskAddValidatorExtPt.validate(cronTaskAddCmd));
-        //新建任务
+        //1.执行扩展点
+        extensionExecutor.executeVoid(CronTaskValidatorExtPt.class, cronTaskAddCmd.getBizScenario(),
+                cronTaskValidatorExtPt -> cronTaskValidatorExtPt.validate(cronTaskAddCmd));
+
+        //2.新建任务
         Long cronTaskId = addCronTask(cronTaskAddCmd);
-        //创建事件
+
+        //3.创建事件
         publish(cronTaskId, cronTaskAddCmd);
         return Response.buildSuccess();
+    }
+
+    /**
+     * 更新周期任务
+     *
+     * @param cronTaskUpdateCmd 更新周期任务指令
+     *
+     * @return 处理结果
+     */
+    @Override
+    @Transactional(rollbackFor = Throwable.class, isolation = Isolation.READ_COMMITTED)
+    public Response update(CronTaskUpdateCmd cronTaskUpdateCmd) {
+        //1.执行扩展点
+        extensionExecutor.executeVoid(CronTaskValidatorExtPt.class, cronTaskUpdateCmd.getBizScenario(),
+                cronTaskValidatorExtPt -> cronTaskValidatorExtPt.validate(cronTaskUpdateCmd));
+
+        //2.更新任务
+        SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskUpdateCmd.getCronTask().getAppId());
+        BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
+
+        //3.更新事件
+        return null;
     }
 
     /**
      * 新建任务
      *
      * @param cronTaskAddCmd 添加周期任务指令
+     *
      * @return 任务主键id
      */
     private Long addCronTask(CronTaskAddCmd cronTaskAddCmd) {
         SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskAddCmd.getCronTask().getAppId());
         BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
         cronTaskAddCmd.getCronTask().setAppName(appInfoResp.getData().getAppName());
-        SingleResponse<Long> createCronTaskResp = cronTaskQryExe.create(cronTaskAddCmd);
+        SingleResponse<Long> createCronTaskResp = cronTaskQryExe.execute(cronTaskAddCmd);
         BusinessAssert.isTrue(createCronTaskResp.isSuccess(), "创建周期任务失败");
         return createCronTaskResp.getData();
     }

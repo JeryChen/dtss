@@ -1,6 +1,6 @@
 package com.df.dtss.handle.extension;
 
-import com.df.dtss.domain.dto.CronTaskAddCmd;
+import com.df.dtss.domain.dto.CronTaskUpdateCmd;
 import com.df.dtss.domain.dto.clientobject.CronTaskDTO;
 import com.df.dtss.domain.dto.clientobject.TaskGlueDTO;
 import com.df.dtss.domain.enums.BlockStrategyEnum;
@@ -12,21 +12,21 @@ import com.df.dtss.handle.extension.point.CronTaskValidatorExtPt;
 import com.xy.cola.exception.util.ArgumentAssert;
 import com.xy.cola.extension.Extension;
 
-import static com.df.dtss.domain.constants.BizSceneConstants.ADD_CRON_TASK_SCENARIO;
 import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_SYS;
 import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_USE_CASE;
+import static com.df.dtss.domain.constants.BizSceneConstants.UPDATE_CRON_TASK_SCENARIO;
 
 /**
  * <功能介绍><br>
  * <p>
- * <周期任务创建验证处理器>
+ * <周期任务更新验证处理器>
  *
  * @author xy on 2020/10/30.
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@Extension(bizId = ADMIN_SYS, useCase = ADMIN_USE_CASE, scenario = ADD_CRON_TASK_SCENARIO)
-public class CronTaskAddValidatorHandle implements CronTaskValidatorExtPt<CronTaskAddCmd> {
+@Extension(bizId = ADMIN_SYS, useCase = ADMIN_USE_CASE, scenario = UPDATE_CRON_TASK_SCENARIO)
+public class CronTaskUpdateValidatorHandle implements CronTaskValidatorExtPt<CronTaskUpdateCmd> {
 
     /**
      * 周期任务参数验证处理
@@ -34,8 +34,9 @@ public class CronTaskAddValidatorHandle implements CronTaskValidatorExtPt<CronTa
      * @param cmd 周期任务操作参数指令
      */
     @Override
-    public void validate(CronTaskAddCmd cmd) {
+    public void validate(CronTaskUpdateCmd cmd) {
         CronTaskValidatorExtPt.super.validate(cmd);
+        ArgumentAssert.notNull(cmd.getTaskId(), "周期任务id不能为空");
         CronTaskDTO cronTask = cmd.getCronTask();
         ArgumentAssert.notNull(cronTask, "周期任务参数信息不能为空");
         ArgumentAssert.hasText(cronTask.getTaskName(), "[任务名称]不能为空");

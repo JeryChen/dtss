@@ -75,7 +75,7 @@ public class CronTaskQryExe {
      * @param cronTaskAddCmd 添加周期任务指令
      * @return 处理结果，返回周期任务主键id
      */
-    public SingleResponse<Long> create(CronTaskAddCmd cronTaskAddCmd) {
+    public SingleResponse<Long> execute(CronTaskAddCmd cronTaskAddCmd) {
         SingleResponse<Long> response = null;
         CronTaskInfo cronTaskInfo = CronTaskConvert.INSTANCE.map(cronTaskAddCmd.getCronTask());
         cronTaskInfo.setCreator(cronTaskAddCmd.getOperator());

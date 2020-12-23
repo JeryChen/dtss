@@ -30,6 +30,6 @@ public class CronTaskQry extends Command {
     /**
      * 所属应用名
      */
-    private String appName;
+    private Long appId;
 
 }

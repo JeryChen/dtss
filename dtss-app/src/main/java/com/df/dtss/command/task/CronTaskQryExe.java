@@ -1,12 +1,9 @@
 package com.df.dtss.command.task;
 
-import com.df.dtss.convert.CronTaskViewConvert;
 import com.df.dtss.convert.CronTaskConvert;
-import com.df.dtss.domain.dto.CronTaskAddCmd;
+import com.df.dtss.convert.CronTaskViewConvert;
 import com.df.dtss.domain.dto.CronTaskQry;
-import com.df.dtss.domain.enums.IsEnum;
 import com.df.dtss.domain.query.CronTaskInfoQuery;
-import com.df.dtss.domain.util.MD5CryptUtils;
 import com.df.dtss.gatewayimpl.database.CronTaskInfoMapper;
 import com.df.dtss.gatewayimpl.database.model.CronTaskInfo;
 import com.df.dtss.vo.CronTaskVO;
@@ -14,13 +11,12 @@ import com.google.common.collect.Lists;
 import com.xy.cola.dto.PageResponse;
 import com.xy.cola.dto.PagingParam;
 import com.xy.cola.dto.SingleResponse;
-import com.xy.cola.enums.ResponseCodeEnum;
 import com.xy.cola.util.StreamUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,9 +40,10 @@ public class CronTaskQryExe {
      *
      * @param cronTaskQry 查询参数指令
      * @param pagingParam 分页参数信息
+     *
      * @return 分页周期任务信息
      */
-    public PageResponse<List<CronTaskVO>> execute(CronTaskQry cronTaskQry, PagingParam pagingParam) {
+    public PageResponse<List<CronTaskVO>> page(CronTaskQry cronTaskQry, PagingParam pagingParam) {
         PageResponse<List<CronTaskVO>> response = PageResponse.of(null, pagingParam);
         CronTaskInfoQuery cronTaskInfoQuery = CronTaskConvert.INSTANCE.map(cronTaskQry);
         cronTaskInfoQuery.setPagingParam(pagingParam);
@@ -70,28 +67,32 @@ public class CronTaskQryExe {
     }
 
     /**
-     * 创建周期任务
+     * 根据主键id查询任务信息
      *
-     * @param cronTaskAddCmd 添加周期任务指令
-     * @return 处理结果，返回周期任务主键id
+     * @param taskId 任务id
+     *
+     * @return 任务信息
      */
-    public SingleResponse<Long> execute(CronTaskAddCmd cronTaskAddCmd) {
-        SingleResponse<Long> response = null;
-        CronTaskInfo cronTaskInfo = CronTaskConvert.INSTANCE.map(cronTaskAddCmd.getCronTask());
-        cronTaskInfo.setCreator(cronTaskAddCmd.getOperator());
-        cronTaskInfo.setEditor(cronTaskAddCmd.getOperator());
-        cronTaskInfo.setTaskCode(MD5CryptUtils.md5(cronTaskInfo.getTaskName() + cronTaskInfo.getAppId()));
-        cronTaskInfo.setIsDeleted(IsEnum.NO.getCode());
-        Date currDate = new Date();
-        cronTaskInfo.setCreateTime(currDate);
-        cronTaskInfo.setEditTime(currDate);
-        int insert = cronTaskInfoMapper.insert(cronTaskInfo);
-        if (insert > 0) {
-            response = SingleResponse.buildSuccess();
-            response.setData(cronTaskInfo.getId());
-        } else {
-            response = (SingleResponse<Long>) SingleResponse.buildFailure(ResponseCodeEnum.FAIL_BIZ_501);
+    public SingleResponse<CronTaskVO> loadById(Long taskId) {
+        if (Objects.isNull(taskId)) {
+            return SingleResponse.of(null);
         }
-        return response;
+        CronTaskInfo cronTaskInfo = cronTaskInfoMapper.selectByPrimaryKey(taskId);
+        return SingleResponse.of(CronTaskViewConvert.INSTANCE.map(cronTaskInfo));
+    }
+
+    /**
+     * 根据主键id批量查询任务信息
+     *
+     * @param taskIds 任务ids
+     *
+     * @return 任务信息
+     */
+    public SingleResponse<List<CronTaskVO>> loadByIds(List<Long> taskIds) {
+        if (CollectionUtils.isEmpty(taskIds)) {
+            return SingleResponse.of(null);
+        }
+        List<CronTaskInfo> cronTaskInfos = cronTaskInfoMapper.selectByIds(taskIds);
+        return SingleResponse.of(StreamUtil.map(cronTaskInfos, CronTaskViewConvert.INSTANCE::map));
     }
 }

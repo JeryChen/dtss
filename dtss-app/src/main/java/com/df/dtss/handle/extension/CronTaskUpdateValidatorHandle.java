@@ -1,5 +1,6 @@
 package com.df.dtss.handle.extension;
 
+import com.df.dtss.command.task.CronTaskQryExe;
 import com.df.dtss.domain.dto.CronTaskUpdateCmd;
 import com.df.dtss.domain.dto.clientobject.CronTaskDTO;
 import com.df.dtss.domain.dto.clientobject.TaskGlueDTO;
@@ -9,8 +10,18 @@ import com.df.dtss.domain.enums.RouteStrategyEnum;
 import com.df.dtss.domain.enums.RunTypeEnum;
 import com.df.dtss.domain.util.CronExpression;
 import com.df.dtss.handle.extension.point.CronTaskValidatorExtPt;
+import com.df.dtss.vo.CronTaskVO;
+import com.google.common.collect.Sets;
+import com.xy.cola.dto.SingleResponse;
 import com.xy.cola.exception.util.ArgumentAssert;
 import com.xy.cola.extension.Extension;
+import com.xy.cola.util.StreamUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_SYS;
 import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_USE_CASE;
@@ -27,6 +38,9 @@ import static com.df.dtss.domain.constants.BizSceneConstants.UPDATE_CRON_TASK_SC
  */
 @Extension(bizId = ADMIN_SYS, useCase = ADMIN_USE_CASE, scenario = UPDATE_CRON_TASK_SCENARIO)
 public class CronTaskUpdateValidatorHandle implements CronTaskValidatorExtPt<CronTaskUpdateCmd> {
+
+    @Resource
+    private CronTaskQryExe cronTaskQryExe;
 
     /**
      * 周期任务参数验证处理
@@ -60,6 +74,16 @@ public class CronTaskUpdateValidatorHandle implements CronTaskValidatorExtPt<Cro
             ArgumentAssert.notNull(taskGlue.getGlueType(), "[glue编码类型]不能为空]");
             ArgumentAssert.isTrue(GlueTypeEnum.isJava(taskGlue.getGlueType()), "非法[glue编码类型]类型");
             ArgumentAssert.hasText(taskGlue.getGlueVersion(), "[glue版本]不能为空");
+        }
+        if (StringUtils.isNotBlank(cronTask.getSubTaskIds())) {
+            List<Long> taskIds = Arrays.stream(cronTask.getSubTaskIds().split(","))
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+            SingleResponse<List<CronTaskVO>> response = cronTaskQryExe.loadByIds(taskIds);
+            ArgumentAssert.notEmpty(response.getData(), "子任务ID：" + cronTask.getSubTaskIds() + "非法");
+            List<Long> taskIdList = StreamUtil.map(response.getData(), CronTaskVO::getId);
+            Sets.SetView<Long> difference = Sets.difference(Sets.newHashSet(taskIdList), Sets.newHashSet(taskIds));
+            ArgumentAssert.isTrue(difference.isEmpty(), "子任务ID：" + StringUtils.join(difference.immutableCopy(), ",") + "非法");
         }
     }
 }

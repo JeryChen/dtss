@@ -1,6 +1,7 @@
 package com.df.dtss.service.impl;
 
 import com.df.dtss.command.app.AppQryExe;
+import com.df.dtss.command.task.CronTaskAddExe;
 import com.df.dtss.command.task.CronTaskQryExe;
 import com.df.dtss.common.event.DomainEventPublisher;
 import com.df.dtss.domain.dto.CronTaskAddCmd;
@@ -47,6 +48,9 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
     private CronTaskQryExe cronTaskQryExe;
 
     @Resource
+    private CronTaskAddExe cronTaskAddExe;
+
+    @Resource
     private AppQryExe appQryExe;
 
     /**
@@ -59,7 +63,7 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
      */
     @Override
     public PageResponse<List<CronTaskVO>> pageList(CronTaskQry cronTaskQry, PagingParam pagingParam) {
-        return cronTaskQryExe.execute(cronTaskQry, pagingParam);
+        return cronTaskQryExe.page(cronTaskQry, pagingParam);
     }
 
     /**
@@ -99,8 +103,13 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
                 cronTaskValidatorExtPt -> cronTaskValidatorExtPt.validate(cronTaskUpdateCmd));
 
         //2.更新任务
-        SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskUpdateCmd.getCronTask().getAppId());
+        SingleResponse<AppInfoVO> appInfoResp = appQryExe.loadById(cronTaskUpdateCmd.getCronTask().getAppId());
         BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
+
+        SingleResponse<CronTaskVO> result = cronTaskQryExe.loadById(cronTaskUpdateCmd.getTaskId());
+        BusinessAssert.isNull(result.getData(), "对应任务信息不存在");
+
+
 
         //3.更新事件
         return null;
@@ -114,10 +123,10 @@ public class CronTaskServiceImpl implements CronTaskServiceI {
      * @return 任务主键id
      */
     private Long addCronTask(CronTaskAddCmd cronTaskAddCmd) {
-        SingleResponse<AppInfoVO> appInfoResp = appQryExe.execute(cronTaskAddCmd.getCronTask().getAppId());
+        SingleResponse<AppInfoVO> appInfoResp = appQryExe.loadById(cronTaskAddCmd.getCronTask().getAppId());
         BusinessAssert.isNull(appInfoResp.getData(), "所属应用不存在");
         cronTaskAddCmd.getCronTask().setAppName(appInfoResp.getData().getAppName());
-        SingleResponse<Long> createCronTaskResp = cronTaskQryExe.execute(cronTaskAddCmd);
+        SingleResponse<Long> createCronTaskResp = cronTaskAddExe.add(cronTaskAddCmd);
         BusinessAssert.isTrue(createCronTaskResp.isSuccess(), "创建周期任务失败");
         return createCronTaskResp.getData();
     }

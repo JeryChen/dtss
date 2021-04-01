@@ -34,7 +34,7 @@ public class AppServiceImpl implements AppServiceI {
      */
     @Override
     public SingleResponse<List<AppInfoVO>> getAllAppNameList() {
-        return appQryExe.execute();
+        return appQryExe.loadAll();
     }
 
     /**
@@ -46,6 +46,6 @@ public class AppServiceImpl implements AppServiceI {
      */
     @Override
     public PageResponse<List<AppInfoVO>> pageList(AppInfoQry appInfoQry, PagingParam pagingParam) {
-        return appQryExe.execute(appInfoQry, pagingParam);
+        return appQryExe.page(appInfoQry, pagingParam);
     }
 }

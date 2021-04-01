@@ -37,7 +37,7 @@ public class AppQryExe {
      *
      * @return 所有appName
      */
-    public SingleResponse<List<AppInfoVO>> execute() {
+    public SingleResponse<List<AppInfoVO>> loadAll() {
         List<AppInfo> allAppList = appInfoMapper.getAllApps();
         return SingleResponse.of(StreamUtil.map(allAppList, AppViewConvert.INSTANCE::map));
     }
@@ -49,7 +49,7 @@ public class AppQryExe {
      * @param pagingParam 分页信息
      * @return 应用信息
      */
-    public PageResponse<List<AppInfoVO>> execute(AppInfoQry appInfoQry, PagingParam pagingParam) {
+    public PageResponse<List<AppInfoVO>> page(AppInfoQry appInfoQry, PagingParam pagingParam) {
         PageResponse<List<AppInfoVO>> response = PageResponse.of(null, pagingParam);
         AppInfoQuery appInfoQuery = AppConvert.INSTANCE.map(appInfoQry);
         appInfoQuery.setPagingParam(pagingParam);
@@ -68,7 +68,7 @@ public class AppQryExe {
      * @param appId app主键id
      * @return 处理结果
      */
-    public SingleResponse<AppInfoVO> execute(Long appId) {
+    public SingleResponse<AppInfoVO> loadById(Long appId) {
         AppInfo appInfo = appInfoMapper.selectByPrimaryKey(appId);
         return SingleResponse.of(AppViewConvert.INSTANCE.map(appInfo));
     }

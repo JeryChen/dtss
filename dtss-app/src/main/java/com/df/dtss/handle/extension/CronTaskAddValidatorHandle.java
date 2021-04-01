@@ -1,5 +1,6 @@
 package com.df.dtss.handle.extension;
 
+import com.df.dtss.command.task.CronTaskQryExe;
 import com.df.dtss.domain.dto.CronTaskAddCmd;
 import com.df.dtss.domain.dto.clientobject.CronTaskDTO;
 import com.df.dtss.domain.dto.clientobject.TaskGlueDTO;
@@ -9,8 +10,18 @@ import com.df.dtss.domain.enums.RouteStrategyEnum;
 import com.df.dtss.domain.enums.RunTypeEnum;
 import com.df.dtss.domain.util.CronExpression;
 import com.df.dtss.handle.extension.point.CronTaskValidatorExtPt;
+import com.df.dtss.vo.CronTaskVO;
+import com.google.common.collect.Sets;
+import com.xy.cola.dto.SingleResponse;
 import com.xy.cola.exception.util.ArgumentAssert;
 import com.xy.cola.extension.Extension;
+import com.xy.cola.util.StreamUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.df.dtss.domain.constants.BizSceneConstants.ADD_CRON_TASK_SCENARIO;
 import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_SYS;
@@ -28,6 +39,9 @@ import static com.df.dtss.domain.constants.BizSceneConstants.ADMIN_USE_CASE;
 @Extension(bizId = ADMIN_SYS, useCase = ADMIN_USE_CASE, scenario = ADD_CRON_TASK_SCENARIO)
 public class CronTaskAddValidatorHandle implements CronTaskValidatorExtPt<CronTaskAddCmd> {
 
+    @Resource
+    private CronTaskQryExe cronTaskQryExe;
+
     /**
      * 周期任务参数验证处理
      *
@@ -35,7 +49,8 @@ public class CronTaskAddValidatorHandle implements CronTaskValidatorExtPt<CronTa
      */
     @Override
     public void validate(CronTaskAddCmd cmd) {
-        CronTaskValidatorExtPt.super.validate(cmd);
+        ArgumentAssert.notNull(cmd, "周期任务操作参数指令对象不能为空");
+        ArgumentAssert.notNull(cmd.getBizScenario(), "业务场景来源不能为空");
         CronTaskDTO cronTask = cmd.getCronTask();
         ArgumentAssert.notNull(cronTask, "周期任务参数信息不能为空");
         ArgumentAssert.hasText(cronTask.getTaskName(), "[任务名称]不能为空");
@@ -59,6 +74,16 @@ public class CronTaskAddValidatorHandle implements CronTaskValidatorExtPt<CronTa
             ArgumentAssert.notNull(taskGlue.getGlueType(), "[glue编码类型]不能为空]");
             ArgumentAssert.isTrue(GlueTypeEnum.isJava(taskGlue.getGlueType()), "非法[glue编码类型]类型");
             ArgumentAssert.hasText(taskGlue.getGlueVersion(), "[glue版本]不能为空");
+        }
+        if (StringUtils.isNotBlank(cronTask.getSubTaskIds())) {
+            List<Long> taskIds = Arrays.stream(cronTask.getSubTaskIds().split(","))
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+            SingleResponse<List<CronTaskVO>> response = cronTaskQryExe.loadByIds(taskIds);
+            ArgumentAssert.notEmpty(response.getData(), "子任务ID：" + cronTask.getSubTaskIds() + "非法");
+            List<Long> taskIdList = StreamUtil.map(response.getData(), CronTaskVO::getId);
+            Sets.SetView<Long> difference = Sets.difference(Sets.newHashSet(taskIdList), Sets.newHashSet(taskIds));
+            ArgumentAssert.isTrue(difference.isEmpty(), "子任务ID：" + StringUtils.join(difference.immutableCopy(), ",") + "非法");
         }
     }
 }

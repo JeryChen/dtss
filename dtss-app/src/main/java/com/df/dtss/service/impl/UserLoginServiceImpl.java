@@ -3,9 +3,11 @@ package com.df.dtss.service.impl;
 import com.df.dtss.command.user.UserAccountQryExe;
 import com.df.dtss.domain.dto.UserLoginCmd;
 import com.df.dtss.domain.dto.clientobject.UserAccountDTO;
+import com.df.dtss.domain.util.MD5CryptUtils;
 import com.df.dtss.handle.extension.point.BaseValidatorExtPt;
 import com.df.dtss.service.UserLoginServiceI;
 import com.xy.cola.dto.Response;
+import com.xy.cola.enums.ResponseCodeEnum;
 import com.xy.cola.extension.ExtensionExecutor;
 import org.springframework.stereotype.Service;
 
@@ -39,16 +41,19 @@ public class UserLoginServiceImpl implements UserLoginServiceI {
      */
     @Override
     public Response login(UserLoginCmd userLoginCmd) {
-        Response response;
         extensionExecutor.executeVoid(BaseValidatorExtPt.class, userLoginCmd.getBizScenario(),
                 userLoginValidator -> userLoginValidator.validate(userLoginCmd));
 
         UserAccountDTO userAccountDTO = userAccountQryExe.getByUserName(userLoginCmd.getUsername());
 
         if (Objects.isNull(userAccountDTO)) {
-            response = Response.buildFailure()
+            return Response.buildFailure(ResponseCodeEnum.FAIL_BIZ_501.getCode(), "账户不存在");
         }
 
-        return response;
+        if (!Objects.equals(userAccountDTO.getPassword(), MD5CryptUtils.md5(userLoginCmd.getPassword()))) {
+            return Response.buildFailure(ResponseCodeEnum.FAIL_BIZ_501.getCode(), "密码错误");
+        }
+
+        return Response.buildSuccess();
     }
 }

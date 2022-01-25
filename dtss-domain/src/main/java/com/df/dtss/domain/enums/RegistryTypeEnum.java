@@ -39,4 +39,8 @@ public enum RegistryTypeEnum {
         }
         return false;
     }
+
+    public boolean equalsCurr(Integer code) {
+        return this.code.equals(code);
+    }
 }

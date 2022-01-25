@@ -2,7 +2,6 @@ package com.df.dtss.command.task;
 
 import com.df.dtss.convert.CronTaskConvert;
 import com.df.dtss.domain.dto.CronTaskAddCmd;
-import com.df.dtss.domain.enums.IsEnum;
 import com.df.dtss.domain.util.MD5CryptUtils;
 import com.df.dtss.gatewayimpl.database.CronTaskInfoMapper;
 import com.df.dtss.gatewayimpl.database.model.CronTaskInfo;
@@ -11,7 +10,6 @@ import com.xy.cola.enums.ResponseCodeEnum;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * <功能介绍><br>
@@ -40,15 +38,11 @@ public class CronTaskAddExe {
         cronTaskInfo.setCreator(cronTaskAddCmd.getOperator());
         cronTaskInfo.setEditor(cronTaskAddCmd.getOperator());
         cronTaskInfo.setTaskCode(MD5CryptUtils.md5(cronTaskInfo.getTaskName() + cronTaskInfo.getAppId()));
-        cronTaskInfo.setIsDeleted(IsEnum.NO.getCode());
-        Date currDate = new Date();
-        cronTaskInfo.setCreateTime(currDate);
-        cronTaskInfo.setEditTime(currDate);
         int insert = cronTaskInfoMapper.insert(cronTaskInfo);
         if (insert > 0) {
             response = SingleResponse.of(cronTaskInfo.getId());
         } else {
-            response = SingleResponse.buildFailure(ResponseCodeEnum.FAIL_BIZ_501.getCode(), ResponseCodeEnum.FAIL_BIZ_501.getDesc());
+            response = SingleResponse.buildFailure(ResponseCodeEnum.FAIL_BIZ_501.getCode(), "创建周期任务失败");
         }
         return response;
     }

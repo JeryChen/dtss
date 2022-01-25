@@ -92,11 +92,11 @@
         #{glueSourceId, jdbcType=BIGINT},
         #{lastExecuteTime, jdbcType=BIGINT},
         #{nextExecuteTime, jdbcType=BIGINT},
-        #{isDeleted, jdbcType=TINYINT},
+        0,
         #{creator, jdbcType=VARCHAR},
         #{editor, jdbcType=VARCHAR},
-        #{createTime, jdbcType=TIMESTAMP},
-        #{editTime, jdbcType=TIMESTAMP}
+        now(),
+        now()
         )
     </insert>
 

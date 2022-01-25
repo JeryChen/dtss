@@ -43,9 +43,9 @@
         #{password, jdbcType=VARCHAR},
         #{role, jdbcType=TINYINT},
         #{permission, jdbcType=VARCHAR},
-        #{isDeleted, jdbcType=TINYINT},
-        #{createTime, jdbcType=TIMESTAMP},
-        #{editTime, jdbcType=TIMESTAMP}
+        0,
+        now(),
+        now()
         )
     </insert>
 

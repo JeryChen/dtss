@@ -37,8 +37,8 @@
             #{registryGroup, jdbcType=VARCHAR},
             #{registryKey, jdbcType=VARCHAR},
             #{registryValue, jdbcType=VARCHAR},
-            #{createTime, jdbcType=TIMESTAMP},
-            #{editTime, jdbcType=TIMESTAMP}
+            now(),
+            now()
             )
     </insert>
 

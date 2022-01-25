@@ -1,7 +1,7 @@
 package com.df.dtss.command.app;
 
-import com.df.dtss.convert.AppViewConvert;
 import com.df.dtss.convert.AppConvert;
+import com.df.dtss.convert.AppViewConvert;
 import com.df.dtss.domain.dto.AppInfoQry;
 import com.df.dtss.domain.query.AppInfoQuery;
 import com.df.dtss.gatewayimpl.database.AppInfoMapper;
@@ -47,6 +47,7 @@ public class AppQryExe {
      *
      * @param appInfoQry  查询参数
      * @param pagingParam 分页信息
+     *
      * @return 应用信息
      */
     public PageResponse<List<AppInfoVO>> page(AppInfoQry appInfoQry, PagingParam pagingParam) {
@@ -66,10 +67,12 @@ public class AppQryExe {
      * 根据主键id查询app应用信息
      *
      * @param appId app主键id
+     *
      * @return 处理结果
      */
     public SingleResponse<AppInfoVO> loadById(Long appId) {
         AppInfo appInfo = appInfoMapper.selectByPrimaryKey(appId);
         return SingleResponse.of(AppViewConvert.INSTANCE.map(appInfo));
     }
+
 }

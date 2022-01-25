@@ -30,6 +30,7 @@ public class TaskGlueAddExe {
      * 执行创建任务glue处理
      *
      * @param taskGlueAddCmd 添加任务glue脚本信息指令
+     *
      * @return 处理结果
      */
     public Response execute(TaskGlueAddCmd taskGlueAddCmd) {
@@ -45,21 +46,22 @@ public class TaskGlueAddExe {
      * 构建glue信息
      *
      * @param taskGlueAddCmd 添加任务glue脚本信息指令
+     *
      * @return glue信息
      */
     private TaskGlueRecord build(TaskGlueAddCmd taskGlueAddCmd) {
         Date currDate = new Date();
         return TaskGlueRecord.builder()
-                .taskId(taskGlueAddCmd.getTaskId())
-                .taskType(taskGlueAddCmd.getTaskType())
-                .glueType(taskGlueAddCmd.getTaskGlue().getGlueType())
-                .glueSource(taskGlueAddCmd.getTaskGlue().getGlueSource())
-                .glueVersion(taskGlueAddCmd.getTaskGlue().getGlueVersion())
-                .isDeleted(IsEnum.NO.getCode())
-                .creator(taskGlueAddCmd.getOperator())
-                .editor(taskGlueAddCmd.getOperator())
-                .createTime(currDate)
-                .editTime(currDate)
-                .build();
+                             .taskId(taskGlueAddCmd.getTaskId())
+                             .taskType(taskGlueAddCmd.getTaskType())
+                             .glueType(taskGlueAddCmd.getTaskGlue().getGlueType())
+                             .glueSource(taskGlueAddCmd.getTaskGlue().getGlueSource())
+                             .glueVersion(taskGlueAddCmd.getTaskGlue().getGlueVersion())
+                             .isDeleted(IsEnum.NO.getCode())
+                             .creator(taskGlueAddCmd.getOperator())
+                             .editor(taskGlueAddCmd.getOperator())
+                             .createTime(currDate)
+                             .editTime(currDate)
+                             .build();
     }
 }

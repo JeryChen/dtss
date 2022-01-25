@@ -14,20 +14,35 @@ public interface BizSceneConstants {
     /**
      * dtss后台系统
      */
-    static final String ADMIN_SYS = "dtss";
+    String ADMIN_SYS = "dtss";
 
     /**
      * 后台使用场景
      */
-    static final String ADMIN_USE_CASE = "admin";
+    String ADMIN_USE_CASE = "admin";
 
     /**
      * 添加cronTask场景
      */
-    static final String ADD_CRON_TASK_SCENARIO = "addCronTask";
+    String ADD_CRON_TASK_SCENARIO = "addCronTask";
 
     /**
      * 更新cronTask场景
      */
-    static final String UPDATE_CRON_TASK_SCENARIO = "updateCronTask";
+    String UPDATE_CRON_TASK_SCENARIO = "updateCronTask";
+
+    /**
+     * 添加appInfo场景
+     */
+    String ADD_APP_INFO_SCENARIO = "addAppInfo";
+
+    /**
+     * 修改appInfo场景
+     */
+    String UPDATE_APP_INFO_SCENARIO = "updateAppInfo";
+
+    /**
+     * 用户登录
+     */
+    String USER_LOGIN_SCENARIO = "userLogin";
 }

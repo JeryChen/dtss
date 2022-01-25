@@ -1,6 +1,9 @@
 package com.df.dtss.domain.query;
 
 import com.xy.cola.dto.PagingQuery;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +17,9 @@ import java.util.Date;
 @lombok.Data
 @lombok.EqualsAndHashCode(callSuper = true)
 @lombok.ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserAccountQuery extends PagingQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;

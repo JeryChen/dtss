@@ -4,6 +4,7 @@ import com.xy.cola.exception.BizException;
 import com.xy.cola.exception.util.ArgumentAssert;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -19,7 +20,7 @@ public class MD5CryptUtils {
     /**
      * 编码
      */
-    private static final Charset charset = Charset.forName("UTF-8");
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     /**
      * md5加密
@@ -29,7 +30,7 @@ public class MD5CryptUtils {
      */
     public static String md5(String inputText) {
         ArgumentAssert.hasText(inputText, "加密内容不能为空");
-        return md5Encrypt(inputText.getBytes(charset));
+        return md5Encrypt(inputText.getBytes(CHARSET));
     }
 
     /**
@@ -75,7 +76,7 @@ public class MD5CryptUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(MD5CryptUtils.md5("dsdsdsd"));
+        System.out.println(MD5CryptUtils.md5("123456"));
     }
 
 }
